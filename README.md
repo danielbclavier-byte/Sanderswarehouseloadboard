@@ -37,8 +37,9 @@ quote response time, the WMS portal link, and `rfqEndpoint`.
   partner's browser only. A real partner portal needs logins and a database (Phase 2).
 - Brand colors were sampled from sandersmoving.net: navy `#1A2332` / `#222F44`, gold `#C8A961`.
   They live at the top of `assets/css/styles.css`. Gold buttons use navy text (white on gold fails WCAG AA contrast).
-- The logo is a text stand-in. To use the official Sanders logo, save it as `assets/img/logo.png` (white
-  version) and replace the two `<span>`s inside `<a class="logo">` on each page with
-  `<img src="assets/img/logo.png" alt="Sanders Warehouse Loads">`.
-- Hero photo: save a skyline or warehouse photo as `assets/img/hero.jpg` and change `class="hero"` to
-  `class="hero has-photo"` in `index.html`.
+- Logo: `assets/img/sanders-moving-logo.png` was cut from a screenshot of sandersmoving.net. Swap in the
+  original logo file (white version, same name) for sharper results.
+- Hero photo: [Nashville skyline.jpg](https://commons.wikimedia.org/wiki/File:Nashville_skyline.jpg) by
+  Travlin Braden, CC BY-SA, loaded from Wikimedia Commons. Keep the photo credit on the page while it's used.
+  To use your own photo, save it as `assets/img/hero.jpg` and delete the `style="--hero-photo: ..."`
+  attribute on the hero in `index.html`.

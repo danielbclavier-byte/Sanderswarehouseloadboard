@@ -65,12 +65,11 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.01em; }
 /* ---------- Header ---------- */
 .site-header { background: var(--navy); border-bottom: 1px solid #111824; }
 .site-header .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 28px; padding-top: 18px; padding-bottom: 18px; }
-.logo { display: inline-flex; flex-direction: column; text-decoration: none; color: var(--text); line-height: 0.92; }
+.logo { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text); }
 .logo:hover { color: var(--text); }
-.logo-mark { font-family: var(--font-logo); font-weight: 900; font-style: italic; font-size: 30px; letter-spacing: -0.01em; }
-.logo-text { font-family: var(--font-logo); font-weight: 900; font-style: italic; font-size: 15px; letter-spacing: 0.07em; color: var(--gold); margin-top: 4px; }
-.logo-text small { display: none; }
-.logo img { display: block; height: 56px; width: auto; }
+.logo img { display: block; height: 60px; width: auto; }
+.logo-text { font-family: var(--font-logo); font-weight: 900; font-style: italic; font-size: 14px; line-height: 1.1; letter-spacing: 0.06em; color: var(--gold); border-left: 2px solid var(--gold); padding-left: 12px; }
+@media (max-width: 600px) { .logo img { height: 46px; } .logo-text { font-size: 12px; } }
 .main-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 26px; }
 .main-nav a:not(.btn) { color: var(--text); text-decoration: none; font-weight: 500; font-size: 17px; min-height: 44px; display: inline-flex; align-items: center; }
 .main-nav a:not(.btn):hover, .main-nav a[aria-current="page"] { color: var(--gold); }
@@ -170,12 +169,15 @@ table.board .nowrap { white-space: nowrap; }
 /* ===================== Home ===================== */
 .hero {
   background: linear-gradient(160deg, #2E4466 0%, #1A2332 70%);
+  position: relative;
 }
+.hero .photo-credit { margin: 0; max-width: none; position: absolute; right: 8px; bottom: 6px; font-size: 11px; color: rgba(255,255,255,0.7); }
+.photo-credit a { color: inherit; }
 /* Photo hero: save a skyline/warehouse photo as assets/img/hero.jpg and add class="hero has-photo". */
 .hero.has-photo {
   background:
     linear-gradient(90deg, rgba(26, 35, 50, 0.92) 0%, rgba(26, 35, 50, 0.72) 55%, rgba(26, 35, 50, 0.55) 100%),
-    url("../img/hero.jpg") center / cover no-repeat, var(--navy);
+    var(--hero-photo, url("../img/hero.jpg")) center 65% / cover no-repeat, var(--navy);
 }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 40px; align-items: center; padding-top: 72px; padding-bottom: 72px; }
 .hero h1 { margin: 0 0 18px; font-size: clamp(38px, 5.4vw, 68px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.04; }
