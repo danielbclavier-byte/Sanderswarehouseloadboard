@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sanders Partner Portal — Opportunities</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C2410C}a:hover{color:#9A3412}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif; color: #14202E; background: #F5F3EF; min-height: 100vh">
+
+<header style="background: #14202E; color: #F5F3EF">
+<div style="max-width: 1320px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a href="Main.dc.html" style="display: flex; align-items: baseline; gap: 10px; color: #F5F3EF; text-decoration: none">
+<span style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.04em">SANDERS</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #C9CED6">PARTNER PORTAL</span>
+</a>
+<div style="display: flex; align-items: center; gap: 18px; font-size: 14px">
+<span style="color: #C9CED6">[Warehouse name]</span>
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 1px solid #5B6B80; background: transparent; color: #F5F3EF; border-radius: 4px; font: inherit; cursor: pointer">Profile and COI</button>
+</div>
+</div>
+<div style="max-width: 1320px; margin: 0 auto; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 4px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<sc-if value="{{t.on}}" hint-placeholder-val="{{ false }}"><button type="button" aria-pressed="true" onClick="{{t.pick}}" style="min-height: 48px; padding: 0 18px; border: 0; border-bottom: 3px solid #F4A27A; background: transparent; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer">{{t.label}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #F4A27A">{{t.count}}</span></button></sc-if>
+<sc-if value="{{t.off}}" hint-placeholder-val="{{ true }}"><button type="button" aria-pressed="false" onClick="{{t.pick}}" style="min-height: 48px; padding: 0 18px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #C9CED6; font: inherit; font-weight: 500; cursor: pointer">{{t.label}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">{{t.count}}</span></button></sc-if>
+</sc-for>
+</div>
+</header>
+
+<div style="max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin-bottom: 20px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 14px; flex: 1 1 260px; max-width: 360px">Location
+<input type="text" value="{{query}}" onChange="{{onQuery}}" placeholder="City, ST" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; font-size: 16px; background: #FFFFFF"></label>
+<div style="display: flex; flex-wrap: wrap; gap: 8px" role="group" aria-label="Service type">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="6">
+<sc-if value="{{f.on}}" hint-placeholder-val="{{ false }}"><button type="button" aria-pressed="true" onClick="{{f.pick}}" style="min-height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid #14202E; background: #14202E; color: #FFFFFF; font: inherit; font-size: 14px; cursor: pointer">{{f.label}}</button></sc-if>
+<sc-if value="{{f.off}}" hint-placeholder-val="{{ true }}"><button type="button" aria-pressed="false" onClick="{{f.pick}}" style="min-height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid #B9B3A8; background: #FFFFFF; color: #14202E; font: inherit; font-size: 14px; cursor: pointer">{{f.label}}</button></sc-if>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0 0 16px; font-size: 14px; color: #5A6270">{{resultLine}} · Sample opportunities for this mockup</p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px dashed #B9B3A8; border-radius: 6px; padding: 40px; text-align: center; color: #4A5260">Nothing here yet. Try another location, or clear the filter to see every market.</div>
+</sc-if>
+<sc-for list="{{jobs}}" as="j" hint-placeholder-count="4">
+<div style="{{j.cardStyle}}">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5A6270">{{j.id}} · posted {{j.posted}}</span>
+<span style="font-size: 12px; font-weight: 600; background: #FCE9DD; color: #9A3412; padding: 4px 9px; border-radius: 3px">{{j.service}}</span>
+</div>
+<h3 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 600; font-size: 20px; line-height: 1.25">{{j.title}}</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; color: #3A4250">
+<span>{{j.location}}</span><span>{{j.window}}</span><span>{{j.size}}</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+<span style="font-size: 14px; font-weight: 600; color: #14202E">{{j.statusText}}</span>
+<button type="button" onClick="{{j.select}}" style="min-height: 44px; padding: 0 18px; border: 1px solid #14202E; background: #FFFFFF; color: #14202E; border-radius: 4px; font: inherit; font-weight: 600; cursor: pointer">{{j.cta}}</button>
+</div>
+</div>
+</sc-for>
+</div>
+
+<aside aria-label="Opportunity detail" style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 26px">
+<sc-if value="{{noSel}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 24px 0; color: #4A5260; line-height: 1.6">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #9A3412; margin-bottom: 10px">HOW QUOTING WORKS</div>
+Select an opportunity to see the full scope and send your quote. Sanders presents quotes to the client; if yours is accepted, your Sanders consultant confirms the details and Sanders pays you after completion.
+</div>
+</sc-if>
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5A6270">{{sel.id}}</span>
+<h2 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 24px; line-height: 1.2">{{sel.title}}</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; font-size: 14px">
+<div><dt style="color: #5A6270">Location</dt><dd style="margin: 2px 0 0; font-weight: 600">{{sel.location}}</dd></div>
+<div><dt style="color: #5A6270">Service</dt><dd style="margin: 2px 0 0; font-weight: 600">{{sel.service}}</dd></div>
+<div><dt style="color: #5A6270">Window</dt><dd style="margin: 2px 0 0; font-weight: 600">{{sel.window}}</dd></div>
+<div><dt style="color: #5A6270">Volume</dt><dd style="margin: 2px 0 0; font-weight: 600">{{sel.size}}</dd></div>
+</dl>
+<div>
+<div style="font-weight: 600; margin-bottom: 6px">Scope</div>
+<p style="margin: 0; line-height: 1.6; color: #3A4250">{{sel.scope}}</p>
+</div>
+<div>
+<div style="font-weight: 600; margin-bottom: 6px">Requirements</div>
+<p style="margin: 0; line-height: 1.6; color: #3A4250">{{sel.reqs}}</p>
+</div>
+
+<sc-if value="{{canBid}}" hint-placeholder-val="{{ true }}">
+<div style="border-top: 1px solid #D8D3CA; padding-top: 18px; display: flex; flex-direction: column; gap: 14px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500">Your price (USD)<input type="number" min="0" value="{{rate}}" onChange="{{onRate}}" placeholder="Total for the scope" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500">Earliest availability<input type="date" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500">Notes for Sanders<textarea rows="3" placeholder="Storage rate basis, in/out handling fees, dock hours" style="padding: 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; resize: vertical"></textarea></label>
+<button type="button" onClick="{{sendQuote}}" style="min-height: 48px; border: 0; background: #C2410C; color: #FFFFFF; border-radius: 4px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer">Send quote to Sanders</button>
+</div>
+</sc-if>
+<sc-if value="{{quoted}}" hint-placeholder-val="{{ false }}">
+<div style="border-top: 1px solid #D8D3CA; padding-top: 18px; line-height: 1.6">
+<div style="font-weight: 600; margin-bottom: 4px">Quote sent: ${{selBid}}</div>
+<div style="color: #4A5260">Your Sanders consultant will present it to the client and confirm if it's accepted.</div>
+</div>
+</sc-if>
+<sc-if value="{{booked}}" hint-placeholder-val="{{ false }}">
+<div style="border-top: 1px solid #D8D3CA; padding-top: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="font-weight: 600">Booked · Job complete, invoice needed</div>
+<button type="button" style="min-height: 44px; border: 1px solid #14202E; background: #FFFFFF; color: #14202E; border-radius: 4px; font: inherit; font-weight: 600; cursor: pointer">Upload invoice</button>
+<div style="font-size: 14px; color: #5A6270">Payment status shows here once Sanders processes it.</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</aside>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'new', service: 'All', query: 'Nashville, TN', selected: null, rate: '', bids: {} };
+  }
+  renderVals() {
+    const all = [
+      { id: 'SLN-1042', title: 'Hotel FF&E receiving and storage', service: 'Receiving', location: 'Nashville, TN', window: 'Nov 2 – Dec 15', size: '22 pallets + loose FF&E', posted: '2h ago', scope: 'Receive deliveries from multiple vendors, inspect against the manifest, photo-document damage and store until Sanders pulls by floor for the renovation.', reqs: 'Dock-high doors, climate-controlled space, COI naming Sanders as additional insured.' },
+      { id: 'SLN-1039', title: 'Rejected load, immediate storage', service: 'Storage', location: 'Nashville, TN', window: 'Inbound tomorrow, ~2 weeks', size: '26 pallets', posted: '3h ago', scope: 'A truckload refused at the receiver needs to come off the trailer and be held until the shipper reroutes it.', reqs: 'Receive within 24 hours, forklift on site, inventory count on receipt.' },
+      { id: 'SLN-1037', title: 'Short-term overflow storage', service: 'Storage', location: 'Nashville, TN', window: '30 days from Oct 20', size: '14 pallets', posted: '1d ago', scope: 'Inbound overflow inventory held for about 30 days, released in two outbound pulls.', reqs: 'Inventory report on receipt, 48-hour release notice.' },
+      { id: 'SLN-1035', title: 'Retail fixtures cross-dock to 8 store runs', service: 'Cross-dock', location: 'Nashville, TN', window: 'Nov 10 – 14', size: '1 inbound trailer · 8 outbound', posted: '1d ago', scope: 'Receive one trailer of store fixtures, sort by store and stage for Sanders trucks to pick up each morning.', reqs: 'Floor space to stage 8 lanes, 6am dock access.' },
+      { id: 'SLN-1031', title: 'Multifamily furniture staging, 64 units', service: 'Staging', location: 'Chattanooga, TN', window: 'Nov 15 – Dec 12', size: '64 unit packages', posted: '2d ago', scope: 'Receive furniture packages for a lease-up, store by unit and release 8 to 10 units per day on schedule.', reqs: 'Labeled storage by unit number, daily release log.' },
+      { id: 'SLN-1028', title: 'Seasonal retail overflow', service: 'Storage', location: 'Atlanta, GA', window: 'Nov 1 – Jan 15', size: '120 pallets', posted: '3d ago', scope: 'Holiday inventory overflow with weekly replenishment pulls back to the client DC.', reqs: 'Racked storage, weekly inventory report, WMS or spreadsheet visibility.' },
+      { id: 'SLN-1024', title: 'Transload two 53-foot trailers', service: 'Transload', location: 'Memphis, TN', window: 'Oct 28', size: '2 trailers', posted: '4d ago', scope: 'Floor-loaded freight transferred to pallets and reloaded to outbound trailers.', reqs: 'Same-day turnaround, pallets and stretch wrap supplied.' },
+      { id: 'SLN-1019', title: 'Event materials storage', service: 'Staging', location: 'Nashville, TN', window: 'Completed Oct 1', size: '9 pallets', posted: '2w ago', scope: 'Stored exhibit materials between two conventions and released to Sanders trucks for load-in.', reqs: 'Release on 24-hour notice.', booked: true }
+    ];
+    const s = this.state;
+    const q = (s.query || '').split(',')[0].trim().toLowerCase();
+    const inTab = (j) => {
+      if (s.tab === 'booked') return !!j.booked;
+      if (j.booked) return false;
+      return s.tab === 'bids' ? !!s.bids[j.id] : !s.bids[j.id];
+    };
+    const byLoc = (j) => !q || j.location.toLowerCase().indexOf(q) !== -1;
+    const bySvc = (j) => s.service === 'All' || j.service === s.service;
+    const shown = all.filter((j) => inTab(j) && byLoc(j) && bySvc(j));
+    const count = (t) => all.filter((j) => {
+      if (t === 'booked') return !!j.booked;
+      if (j.booked) return false;
+      return t === 'bids' ? !!s.bids[j.id] : !s.bids[j.id];
+    }).length;
+    const tabs = [['new', 'New opportunities'], ['bids', 'My quotes'], ['booked', 'Booked']].map((t) => ({
+      label: t[1], count: count(t[0]), on: s.tab === t[0], off: s.tab !== t[0],
+      pick: () => this.setState({ tab: t[0], selected: null })
+    }));
+    const filters = ['All', 'Storage', 'Receiving', 'Cross-dock', 'Transload', 'Staging'].map((f) => ({
+      label: f, on: s.service === f, off: s.service !== f,
+      pick: () => this.setState({ service: f })
+    }));
+    const base = 'background: #FFFFFF; border-radius: 6px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; ';
+    const jobs = shown.map((j) => {
+      const isSel = s.selected === j.id;
+      return Object.assign({}, j, {
+        cardStyle: base + (isSel ? 'border: 2px solid #C2410C; padding: 19px 21px' : 'border: 1px solid #D8D3CA'),
+        statusText: j.booked ? 'Booked · invoice needed' : (s.bids[j.id] ? 'Quoted $' + s.bids[j.id] : 'Open for quotes'),
+        cta: j.booked ? 'Manage job' : (s.bids[j.id] ? 'View quote' : 'View and quote'),
+        select: () => this.setState({ selected: j.id, rate: '' })
+      });
+    });
+    const sel = all.find((j) => j.id === s.selected) || null;
+    const selBid = sel ? s.bids[sel.id] : null;
+    return {
+      tabs: tabs, filters: filters, jobs: jobs,
+      empty: jobs.length === 0,
+      resultLine: jobs.length + (jobs.length === 1 ? ' opportunity' : ' opportunities') + (q ? ' in ' + s.query : ' in all markets'),
+      query: s.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      sel: sel || {},
+      noSel: !sel, hasSel: !!sel,
+      canBid: !!sel && !sel.booked && !selBid,
+      quoted: !!sel && !!selBid,
+      booked: !!sel && !!sel.booked,
+      selBid: selBid,
+      rate: s.rate,
+      onRate: (e) => this.setState({ rate: e.target.value }),
+      sendQuote: () => {
+        if (!sel || !s.rate) return;
+        const bids = Object.assign({}, s.bids);
+        bids[sel.id] = Number(s.rate).toLocaleString('en-US');
+        this.setState({ bids: bids, rate: '' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

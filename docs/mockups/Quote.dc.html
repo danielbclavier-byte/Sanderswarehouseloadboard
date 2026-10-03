@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sanders Client Portal — Request for quote</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C2410C}a:hover{color:#9A3412}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif; color: #14202E; background: #F5F3EF; min-height: 100vh">
+
+<header style="background: #14202E; color: #F5F3EF">
+<div style="max-width: 1240px; margin: 0 auto; padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" style="display: flex; align-items: baseline; gap: 10px; color: #F5F3EF; text-decoration: none">
+<span style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.04em">SANDERS</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #C9CED6">CLIENT PORTAL</span>
+</a>
+<span style="font-size: 14px; color: #C9CED6">[Client company name]</span>
+</div>
+<nav aria-label="Client portal" style="max-width: 1240px; margin: 0 auto; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 4px; font-size: 15px">
+<a href="#rfq" style="min-height: 48px; display: flex; align-items: center; padding: 0 16px; color: #FFFFFF; font-weight: 600; text-decoration: none; border-bottom: 3px solid #F4A27A">Request a quote</a>
+<a href="#rfq" style="min-height: 48px; display: flex; align-items: center; padding: 0 16px; color: #C9CED6; text-decoration: none; border-bottom: 3px solid transparent">Your requests</a>
+<a href="#rfq" style="min-height: 48px; display: flex; align-items: center; padding: 0 16px; color: #C9CED6; text-decoration: none; border-bottom: 3px solid transparent">Inventory</a>
+<a href="#rfq" style="min-height: 48px; display: flex; align-items: center; padding: 0 16px; color: #C9CED6; text-decoration: none; border-bottom: 3px solid transparent">Invoices</a>
+</nav>
+</header>
+
+<main id="rfq" style="max-width: 1240px; margin: 0 auto; padding: 32px 20px 64px">
+<sc-if value="{{submitted}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 40px 28px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; max-width: 720px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #9A3412">REQUEST RQ-2041 RECEIVED</span>
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 32px; line-height: 1.15">We're matching your freight to a warehouse.</h1>
+<p style="margin: 0; line-height: 1.6; color: #4A5260">Your Sanders logistics consultant will send a quote within [X] business hours. Track it under Your requests.</p>
+<button type="button" onClick="{{reset}}" style="margin-top: 8px; min-height: 44px; padding: 0 20px; border: 1px solid #14202E; background: #FFFFFF; color: #14202E; border-radius: 4px; font: inherit; font-weight: 600; cursor: pointer">Start another request</button>
+</div>
+</sc-if>
+
+<sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+<h1 style="margin: 0 0 6px; font-family: Archivo, sans-serif; font-weight: 800; font-size: 32px">Request for quote</h1>
+<p style="margin: 0 0 24px; color: #4A5260">Fields marked * are required.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+<section style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 24px">
+<h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 600">Services needed *</h2>
+<p style="margin: 0 0 16px; font-size: 14px; color: #5A6270">Select all that apply</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
+<sc-for list="{{services}}" as="s" hint-placeholder-count="8">
+<label style="{{s.boxStyle}}"><input type="checkbox" checked="{{s.on}}" onChange="{{s.toggle}}" style="width: 20px; height: 20px; accent-color: #C2410C; margin: 0">{{s.label}}</label>
+</sc-for>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 24px">
+<h2 style="margin: 0 0 16px; font-size: 18px; font-weight: 600">Location and timing</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Where you need space *<input type="text" placeholder="City, ST or ZIP" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Search radius<select style="min-height: 44px; padding: 0 10px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; background: #FFFFFF"><option>25 miles</option><option>50 miles</option><option>100 miles</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Inbound date *<input type="date" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Release date or duration<input type="text" placeholder="e.g. Dec 15, or 30 days" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 24px">
+<h2 style="margin: 0 0 16px; font-size: 18px; font-weight: 600">Freight details</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Arrives as *<select style="min-height: 44px; padding: 0 10px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; background: #FFFFFF"><option>Palletized</option><option>Floor-loaded</option><option>Cartons / parcel</option><option>Loose FF&amp;E or fixtures</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Quantity *<input type="number" min="1" placeholder="e.g. 24" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Unit<select style="min-height: 44px; padding: 0 10px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; background: #FFFFFF"><option>Pallets</option><option>Cartons</option><option>Trailers</option><option>Containers</option><option>Square feet</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Arriving on<select style="min-height: 44px; padding: 0 10px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; background: #FFFFFF"><option>53' trailer</option><option>Container</option><option>Box truck</option><option>LTL</option><option>Parcel</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Avg. weight per pallet (lbs)<input type="number" min="0" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Stackable?<select style="min-height: 44px; padding: 0 10px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; background: #FFFFFF"><option>Yes</option><option>No</option><option>Not sure</option></select></label>
+</div>
+<label style="margin-top: 16px; display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">What's being stored? *<input type="text" placeholder="e.g. hotel case goods, retail fixtures, packaged food" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 24px; display: flex; flex-wrap: wrap; gap: 28px">
+<fieldset style="flex: 1 1 240px; border: 0; margin: 0; padding: 0">
+<legend style="font-size: 18px; font-weight: 600; margin-bottom: 14px">Storage environment</legend>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{envs}}" as="e" hint-placeholder-count="3">
+<label style="{{e.boxStyle}}"><input type="radio" name="env" checked="{{e.on}}" onChange="{{e.pick}}" style="width: 20px; height: 20px; accent-color: #C2410C; margin: 0">{{e.label}}</label>
+</sc-for>
+</div>
+</fieldset>
+<fieldset style="flex: 1 1 240px; border: 0; margin: 0; padding: 0">
+<legend style="font-size: 18px; font-weight: 600; margin-bottom: 14px">Certifications required</legend>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{certs}}" as="c" hint-placeholder-count="4">
+<label style="{{c.boxStyle}}"><input type="checkbox" checked="{{c.on}}" onChange="{{c.toggle}}" style="width: 20px; height: 20px; accent-color: #C2410C; margin: 0">{{c.label}}</label>
+</sc-for>
+</div>
+</fieldset>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 24px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 18px; font-weight: 600">Anything else we should know?<textarea rows="4" placeholder="Release schedule, dock hours, insurance requirements, special handling" style="padding: 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit; font-size: 15px; font-weight: 400; resize: vertical"></textarea></label>
+</section>
+</div>
+
+<aside aria-label="Your information and summary" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section style="background: #FFFFFF; border: 1px solid #D8D3CA; border-radius: 6px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Your information</h2>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Name *<input type="text" autocomplete="name" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Company *<input type="text" autocomplete="organization" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Email *<input type="email" autocomplete="email" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 15px">Phone<input type="tel" autocomplete="tel" style="min-height: 44px; padding: 0 12px; border: 1px solid #B9B3A8; border-radius: 4px; font: inherit"></label>
+</section>
+<section style="background: #14202E; color: #F5F3EF; border-radius: 6px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #F4A27A">YOUR REQUEST</span>
+<div><div style="font-size: 13px; color: #C9CED6">Services</div><div style="font-weight: 600; line-height: 1.5">{{summaryServices}}</div></div>
+<div><div style="font-size: 13px; color: #C9CED6">Environment</div><div style="font-weight: 600">{{summaryEnv}}</div></div>
+<div><div style="font-size: 13px; color: #C9CED6">Certifications</div><div style="font-weight: 600">{{summaryCerts}}</div></div>
+<button type="button" onClick="{{submit}}" style="margin-top: 6px; min-height: 48px; border: 0; background: #C2410C; color: #FFFFFF; border-radius: 4px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer">Submit request</button>
+<span style="font-size: 13px; color: #C9CED6; line-height: 1.5">A Sanders logistics consultant reviews every request. Quotes typically within [X] business hours.</span>
+</section>
+</aside>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { services: ['Storage'], env: 'Ambient (dry)', certs: [], submitted: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const on = 'display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; border: 1px solid #C2410C; background: #FDF3EC; border-radius: 4px; cursor: pointer; font-size: 15px';
+    const off = 'display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; border: 1px solid #D8D3CA; background: #FFFFFF; border-radius: 4px; cursor: pointer; font-size: 15px';
+    const toggleIn = (key, label) => () => {
+      const list = s[key];
+      const next = list.indexOf(label) !== -1 ? list.filter((x) => x !== label) : list.concat([label]);
+      const patch = {}; patch[key] = next; this.setState(patch);
+    };
+    const serviceLabels = ['Storage', 'Receiving and inspection', 'Cross-docking', 'Transloading', 'Pick, pack and fulfillment', 'Pallet rework and labeling', 'Project staging', 'Delivery from storage'];
+    const services = serviceLabels.map((l) => {
+      const isOn = s.services.indexOf(l) !== -1;
+      return { label: l, on: isOn, boxStyle: isOn ? on : off, toggle: toggleIn('services', l) };
+    });
+    const envs = ['Ambient (dry)', 'Climate-controlled', 'Refrigerated'].map((l) => ({
+      label: l, on: s.env === l, boxStyle: s.env === l ? on : off, pick: () => this.setState({ env: l })
+    }));
+    const certs = ['Food grade', 'Hazmat', 'Bonded', 'High-value / secured'].map((l) => {
+      const isOn = s.certs.indexOf(l) !== -1;
+      return { label: l, on: isOn, boxStyle: isOn ? on : off, toggle: toggleIn('certs', l) };
+    });
+    return {
+      services: services, envs: envs, certs: certs,
+      summaryServices: s.services.length ? s.services.join(', ') : 'None selected yet',
+      summaryEnv: s.env,
+      summaryCerts: s.certs.length ? s.certs.join(', ') : 'None',
+      submitted: s.submitted, editing: !s.submitted,
+      submit: () => this.setState({ submitted: true }),
+      reset: () => this.setState({ submitted: false, services: ['Storage'], env: 'Ambient (dry)', certs: [] })
+    };
+  }
+}
+</script>
+</body>
+</html>

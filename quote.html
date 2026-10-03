@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request a Quote · Sanders Client Portal</title>
+<meta name="description" content="Request warehouse storage, receiving, cross-docking, transloading or project staging from Sanders. One quote, one invoice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html"><span class="brand-name">SANDERS</span><span class="brand-sub">CLIENT PORTAL</span></a>
+    <span class="small" style="color: var(--on-ink-muted)">Questions? <span data-cfg="phone"></span></span>
+  </div>
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Client portal">
+      <button class="tab" role="tab" id="t-rfq" aria-controls="p-rfq" aria-selected="true">Request a quote</button>
+      <button class="tab" role="tab" id="t-req" aria-controls="p-req" aria-selected="false" tabindex="-1">Your requests <span class="count" id="req-count"></span></button>
+      <button class="tab" role="tab" id="t-inv" aria-controls="p-inv" aria-selected="false" tabindex="-1">Inventory</button>
+      <button class="tab" role="tab" id="t-bill" aria-controls="p-bill" aria-selected="false" tabindex="-1">Invoices</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap portal-main">
+
+<!-- ========== Request a quote ========== -->
+<section id="p-rfq" role="tabpanel" aria-labelledby="t-rfq">
+  <div id="rfq-confirm" class="panel confirm" hidden tabindex="-1">
+    <span class="mono small" style="color: var(--accent-hover)">REQUEST <span id="confirm-id"></span> RECEIVED</span>
+    <h1 class="display">We're matching your freight to a warehouse.</h1>
+    <p class="muted" style="margin:0" data-response-time
+       data-with="Your Sanders logistics consultant will send a quote within {t}. Track it under Your requests."
+       data-without="Your Sanders logistics consultant will follow up with questions or a first-pass quote. Track it under Your requests."></p>
+    <p class="small muted" id="demo-note" hidden style="margin:0">Demo mode: this request was saved in this browser only. Connect the form to Zoho (see README) before launch.</p>
+    <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:8px">
+      <button type="button" class="btn btn-outline btn-sm" id="again">Start another request</button>
+      <button type="button" class="btn btn-dark btn-sm" id="see-requests">View your requests</button>
+    </div>
+  </div>
+
+  <form id="rfq-form" novalidate>
+    <h1 class="display">Request for quote</h1>
+    <p class="muted" style="margin: 0 0 24px">Fields marked <span class="req">*</span> are required.</p>
+
+    <div id="form-errors" class="form-errors" role="alert" hidden tabindex="-1"></div>
+
+    <div class="rfq-layout" style="margin-top: 16px">
+      <div class="rfq-main">
+
+        <fieldset class="panel" id="fs-services">
+          <legend style="font-size:18px; font-weight:600; float:left; width:100%; margin-bottom:4px">Services needed <span class="req">*</span></legend>
+          <p class="small muted" style="clear:both; margin:0 0 16px">Select all that apply</p>
+          <div class="choice-grid">
+            <label class="choice"><input type="checkbox" name="services" value="Storage" checked>Storage (overflow, short or long term)</label>
+            <label class="choice"><input type="checkbox" name="services" value="Receiving and inspection">Receiving and inspection</label>
+            <label class="choice"><input type="checkbox" name="services" value="Cross-docking">Cross-docking</label>
+            <label class="choice"><input type="checkbox" name="services" value="Transloading">Transloading</label>
+            <label class="choice"><input type="checkbox" name="services" value="Pick, pack and fulfillment">Pick, pack and fulfillment</label>
+            <label class="choice"><input type="checkbox" name="services" value="Pallet rework and labeling">Pallet rework and labeling</label>
+            <label class="choice"><input type="checkbox" name="services" value="Project staging (FF&amp;E)">Project staging (FF&amp;E)</label>
+            <label class="choice"><input type="checkbox" name="services" value="Delivery from storage">Delivery from storage</label>
+          </div>
+        </fieldset>
+
+        <section class="panel" aria-labelledby="h-loc">
+          <h2 id="h-loc">Location and timing</h2>
+          <div class="grid-fields">
+            <label class="field"><span>Where you need space <span class="req" aria-hidden="true">*</span></span>
+              <input class="input" type="text" name="location" placeholder="City, ST or ZIP" required autocomplete="address-level2"></label>
+            <label class="field">Search radius
+              <select class="select" name="radius"><option>25 miles</option><option selected>50 miles</option><option>100 miles</option><option>250 miles</option></select></label>
+            <label class="field"><span>Inbound date <span class="req" aria-hidden="true">*</span></span>
+              <input class="input" type="date" name="inboundDate" required></label>
+            <label class="field">Release date or duration
+              <input class="input" type="text" name="duration" placeholder="e.g. Dec 15, or 30 days"></label>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-freight">
+          <h2 id="h-freight">Freight details</h2>
+          <div class="grid-fields">
+            <label class="field">Arrives as
+              <select class="select" name="arrivesAs"><option>Palletized</option><option>Floor-loaded</option><option>Cartons / parcel</option><option>Loose FF&amp;E or fixtures</option></select></label>
+            <label class="field"><span>Quantity <span class="req" aria-hidden="true">*</span></span>
+              <input class="input" type="number" name="quantity" min="1" inputmode="numeric" placeholder="e.g. 24" required></label>
+            <label class="field">Unit
+              <select class="select" name="unit"><option>Pallets</option><option>Cartons</option><option>Trailers</option><option>Containers</option><option>Square feet</option></select></label>
+            <label class="field">Arriving on
+              <select class="select" name="arrivingOn"><option>53' trailer</option><option>Container</option><option>Box truck</option><option>LTL</option><option>Parcel</option></select></label>
+            <label class="field">Avg. weight per pallet (lbs)
+              <input class="input" type="number" name="avgWeight" min="0" inputmode="numeric"></label>
+            <label class="field">Stackable?
+              <select class="select" name="stackable"><option>Yes</option><option>No</option><option selected>Not sure</option></select></label>
+          </div>
+          <label class="field" style="margin-top:16px"><span>What's being stored? <span class="req" aria-hidden="true">*</span></span>
+            <input class="input" type="text" name="commodity" placeholder="e.g. hotel case goods, retail fixtures, packaged food" required></label>
+        </section>
+
+        <section class="panel" style="display:flex; flex-wrap:wrap; gap:28px">
+          <fieldset style="flex: 1 1 240px">
+            <legend style="font-size:18px; font-weight:600; margin-bottom:14px">Storage environment</legend>
+            <div class="choice-list">
+              <label class="choice"><input type="radio" name="environment" value="Ambient (dry)" checked>Ambient (dry)</label>
+              <label class="choice"><input type="radio" name="environment" value="Climate-controlled">Climate-controlled</label>
+              <label class="choice"><input type="radio" name="environment" value="Refrigerated">Refrigerated</label>
+            </div>
+          </fieldset>
+          <fieldset style="flex: 1 1 240px">
+            <legend style="font-size:18px; font-weight:600; margin-bottom:14px">Certifications required</legend>
+            <div class="choice-list">
+              <label class="choice"><input type="checkbox" name="certifications" value="Food grade">Food grade</label>
+              <label class="choice"><input type="checkbox" name="certifications" value="Hazmat">Hazmat</label>
+              <label class="choice"><input type="checkbox" name="certifications" value="Bonded">Bonded</label>
+              <label class="choice"><input type="checkbox" name="certifications" value="High-value / secured">High-value / secured</label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="panel">
+          <label class="field" style="font-size:18px; font-weight:600">Anything else we should know?
+            <textarea class="textarea" name="notes" rows="4" placeholder="Release schedule, dock hours, insurance requirements, special handling"></textarea></label>
+        </section>
+      </div>
+
+      <aside class="rfq-side" aria-label="Your information and summary">
+        <section class="panel stack" aria-labelledby="h-you">
+          <h2 id="h-you" style="margin:0">Your information</h2>
+          <label class="field"><span>Name <span class="req" aria-hidden="true">*</span></span>
+            <input class="input" type="text" name="name" autocomplete="name" required></label>
+          <label class="field"><span>Company <span class="req" aria-hidden="true">*</span></span>
+            <input class="input" type="text" name="company" autocomplete="organization" required></label>
+          <label class="field"><span>Email <span class="req" aria-hidden="true">*</span></span>
+            <input class="input" type="email" name="email" autocomplete="email" required></label>
+          <label class="field">Phone
+            <input class="input" type="tel" name="phone" autocomplete="tel"></label>
+          <!-- Honeypot: hidden from people, bots fill it in. -->
+          <label class="visually-hidden" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </section>
+
+        <section class="panel-ink summary" aria-live="polite">
+          <span class="mono small" style="letter-spacing:0.12em; color: var(--accent-on-ink)">YOUR REQUEST</span>
+          <dl style="margin-top:12px">
+            <dt>Services</dt><dd id="sum-services">None selected yet</dd>
+            <dt>Where</dt><dd id="sum-where">Not set</dd>
+            <dt>Volume</dt><dd id="sum-volume">Not set</dd>
+            <dt>Environment</dt><dd id="sum-env">Ambient (dry)</dd>
+            <dt>Certifications</dt><dd id="sum-certs">None</dd>
+          </dl>
+          <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Submit request</button>
+          <p class="small" style="color: var(--on-ink-muted); margin: 12px 0 0" data-response-time
+             data-with="A Sanders logistics consultant reviews every request. Quotes typically within {t}."
+             data-without="A Sanders logistics consultant reviews every request personally."></p>
+        </section>
+      </aside>
+    </div>
+  </form>
+</section>
+
+<!-- ========== Your requests ========== -->
+<section id="p-req" role="tabpanel" aria-labelledby="t-req" hidden>
+  <h1 class="display" style="margin-bottom: 20px">Your requests</h1>
+  <div id="req-list"></div>
+</section>
+
+<!-- ========== Inventory ========== -->
+<section id="p-inv" role="tabpanel" aria-labelledby="t-inv" hidden>
+  <h1 class="display" style="margin-bottom: 12px">Inventory</h1>
+  <div class="panel stack" style="max-width: 720px">
+    <p style="margin:0">Live, SKU-level inventory, cycle counts and receiving reports for goods in Sanders storage live in the Sanders WMS client portal.</p>
+    <div><a class="btn btn-dark btn-sm" id="wms-link" href="#" target="_blank" rel="noopener">Open the WMS client portal</a></div>
+    <p class="small muted" style="margin:0">Goods placed with a partner warehouse are reported by your logistics consultant until partner inventory feeds are connected.</p>
+  </div>
+</section>
+
+<!-- ========== Invoices ========== -->
+<section id="p-bill" role="tabpanel" aria-labelledby="t-bill" hidden>
+  <h1 class="display" style="margin-bottom: 12px">Invoices</h1>
+  <div class="empty">One invoice from Sanders per job, whichever warehouse holds your freight. Invoices appear here once your first job is in storage.</div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span><strong>SANDERS</strong> · Moving and Storage · <span data-cfg="address"></span></span>
+    <span><span data-cfg="phone"></span> <span data-cfg="email"></span> · US DOT <span data-cfg="usdot"></span></span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/quote.js"></script>
+</body>
+</html>
