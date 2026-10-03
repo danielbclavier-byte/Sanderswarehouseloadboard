@@ -67,6 +67,20 @@
     checkboxes('env-filters', ENVS, state.envs, 'env');
   }
 
+  function renderKpis() {
+    var open = ALL.filter(function (j) { return !j.booked; });
+    var markets = {};
+    var plt = 0;
+    open.forEach(function (j) {
+      markets[j.location] = 1;
+      var m = /^([\d,]+)\s*plt/.exec(j.size);
+      if (m) plt += Number(m[1].replace(/,/g, ''));
+    });
+    document.getElementById('k-open').textContent = open.length;
+    document.getElementById('k-markets').textContent = Object.keys(markets).length;
+    document.getElementById('k-plt').textContent = plt.toLocaleString('en-US');
+  }
+
   function renderCounts() {
     ['new', 'bids', 'booked'].forEach(function (t) {
       var n = ALL.filter(function (j) { return inTab(j, t); }).length;
@@ -162,6 +176,7 @@
   function render() {
     renderFilters();
     renderCounts();
+    renderKpis();
     renderList();
     renderDetail();
   }
@@ -172,7 +187,7 @@
     renderDetail();
     if (!focus) return;
     var h = document.getElementById('detail-h');
-    var narrow = window.innerWidth <= 1180;
+    var narrow = window.innerWidth < 1280;
     if (narrow) detailEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (h) h.focus({ preventScroll: !narrow });
   }

@@ -8,27 +8,25 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:ital,wght@1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<div class="utility">
-  <div class="wrap">
-    <span>Questions? Call <span data-cfg="phone"></span></span>
-    <nav class="links" aria-label="Account"><a href="partners.html">Warehouse partner login</a></nav>
-  </div>
-</div>
-<header class="site-header" style="border-bottom: 0">
+<header class="site-header">
   <div class="wrap bar">
     <a class="logo" href="index.html" aria-label="Sanders Warehouse Loads home">
       <span class="logo-mark">SANDERS</span>
-      <span class="logo-text">Warehouse Loads<small>CLIENT PORTAL</small></span>
+      <span class="logo-text">WAREHOUSE LOADS</span>
     </a>
     <nav class="main-nav" aria-label="Main">
       <a href="index.html">Home</a>
-      <a href="partners.html">Load board</a>
+      <a href="partners.html">Load Board</a>
+      <span class="btns">
+        <a class="btn btn-outline" href="quote.html#requests">My Requests</a>
+        <a class="btn btn-primary" data-cfg-href="phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span data-cfg-text="phone"></span></a>
+      </span>
     </nav>
   </div>
 </header>
@@ -64,7 +62,7 @@
   </div>
 
   <form id="rfq-form" novalidate>
-    <div class="page-title">
+    <div class="page-title rule">
       <h1>Request a warehouse quote</h1>
       <span class="small muted">Fields marked <span class="req">*</span> are required.</span>
     </div>
@@ -76,7 +74,7 @@
 
         <fieldset class="panel" id="fs-services">
           <legend class="visually-hidden">Services needed (required)</legend>
-          <div class="panel-head" aria-hidden="true">1 · Services needed <span style="color:#FFB4C0">*</span></div>
+          <div class="panel-head" aria-hidden="true">1 · Services needed <span class="req">*</span></div>
           <div class="panel-body">
             <p class="small muted" style="margin:0 0 10px">Select all that apply</p>
             <div class="choice-grid">
@@ -200,13 +198,13 @@
 
 <!-- ========== My requests ========== -->
 <section id="p-req" role="tabpanel" aria-labelledby="t-req" hidden>
-  <div class="page-title"><h1>My requests</h1></div>
+  <div class="page-title rule"><h1>My requests</h1></div>
   <div id="req-list"></div>
 </section>
 
 <!-- ========== Inventory ========== -->
 <section id="p-inv" role="tabpanel" aria-labelledby="t-inv" hidden>
-  <div class="page-title"><h1>Inventory</h1></div>
+  <div class="page-title rule"><h1>Inventory</h1></div>
   <div class="panel" style="max-width: 720px">
     <div class="panel-body stack">
       <p style="margin:0">Live, SKU-level inventory, cycle counts and receiving reports for goods in Sanders storage are in the Sanders WMS client portal.</p>
@@ -218,7 +216,7 @@
 
 <!-- ========== Invoices ========== -->
 <section id="p-bill" role="tabpanel" aria-labelledby="t-bill" hidden>
-  <div class="page-title"><h1>Invoices</h1></div>
+  <div class="page-title rule"><h1>Invoices</h1></div>
   <div class="empty">One invoice from Sanders per job, whichever warehouse holds your freight. Invoices appear here once your first job is in storage.</div>
 </section>
 

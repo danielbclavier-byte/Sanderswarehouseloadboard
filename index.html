@@ -8,33 +8,27 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:ital,wght@1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<div class="utility">
-  <div class="wrap">
-    <span>Call <span data-cfg="phone"></span> · Mon–Fri</span>
-    <nav class="links" aria-label="Account">
-      <a href="quote.html#requests">Client login</a>
-      <a href="partners.html">Warehouse partner login</a>
-    </nav>
-  </div>
-</div>
 <header class="site-header">
   <div class="wrap bar">
     <a class="logo" href="index.html" aria-label="Sanders Warehouse Loads home">
       <span class="logo-mark">SANDERS</span>
-      <span class="logo-text">Warehouse Loads<small>NASHVILLE · SINCE 1895</small></span>
+      <span class="logo-text">WAREHOUSE LOADS</span>
     </a>
     <nav class="main-nav" aria-label="Main">
-      <a href="partners.html">Load board</a>
+      <a href="partners.html">Load Board</a>
       <a href="#services">Services</a>
-      <a href="#how">How it works</a>
-      <a href="#partners">Become a partner</a>
-      <a class="btn btn-primary" href="quote.html">Get a quote</a>
+      <a href="#how">How It Works</a>
+      <a href="partners.html#profile">Partners</a>
+      <span class="btns">
+        <a class="btn btn-outline" href="quote.html">Get a Quote</a>
+        <a class="btn btn-primary" data-cfg-href="phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span data-cfg-text="phone"></span></a>
+      </span>
     </nav>
   </div>
 </header>
@@ -43,7 +37,7 @@
 <section class="hero">
   <div class="wrap">
     <div>
-      <h1>Warehouse space. Booked fast. No lease.</h1>
+      <h1>Nashville Warehouse Space &amp; Storage Loads</h1>
       <p>Post your storage load and get one quote from Sanders. We place it in our 66,000 sq ft Nashville warehouse or a vetted partner warehouse across the Southeast, then manage it until release.</p>
       <ul>
         <li>One point of contact from inbound to release</li>
@@ -53,6 +47,8 @@
     </div>
 
     <div class="search-card">
+      <h2>Get A Quote</h2>
+      <p class="sub-h">Tell us where and how much. One quote from Sanders.</p>
       <div class="tabs" role="tablist" aria-label="Search">
         <button class="tab" role="tab" id="st-ship" aria-controls="sp-ship" aria-selected="true">I need space</button>
         <button class="tab" role="tab" id="st-wh" aria-controls="sp-wh" aria-selected="false" tabindex="-1">I have space</button>
@@ -72,12 +68,12 @@
           <label class="field">Inbound date<input class="input" type="date" name="inbound"></label>
           <label class="field">Pallets<input class="input" type="number" min="1" name="qty" inputmode="numeric" placeholder="e.g. 24"></label>
         </div>
-        <button class="btn btn-primary btn-block" type="submit">Get a warehouse quote</button>
+        <button class="btn btn-primary btn-block" type="submit">SUBMIT</button>
       </form>
       <form id="sp-wh" role="tabpanel" aria-labelledby="st-wh" action="partners.html" method="get" hidden>
         <label class="field">Your market<input class="input" name="q" placeholder="City, ST" value="Nashville, TN"></label>
         <p class="small muted" style="margin:0">See open storage loads near your warehouse and send Sanders your rate. Free to join.</p>
-        <button class="btn btn-dark btn-block" type="submit">Search open loads</button>
+        <button class="btn btn-primary btn-block" type="submit">SEARCH OPEN LOADS</button>
       </form>
     </div>
   </div>
@@ -94,11 +90,11 @@
 
 <section class="wrap section" aria-labelledby="loads-h">
   <div class="section-head">
-    <div>
+    <div class="rule">
       <h2 id="loads-h">Open warehouse loads</h2>
       <p>Latest storage and handling jobs posted to the Sanders partner network.</p>
     </div>
-    <a class="btn btn-outline btn-sm" href="partners.html?q=">View full load board</a>
+    <a class="btn btn-outline" href="partners.html?q=">View Full Load Board</a>
   </div>
   <div class="table-wrap">
     <table class="board">
@@ -109,7 +105,7 @@
 </section>
 
 <section id="services" class="wrap section">
-  <div class="section-head"><h2>Warehouse services</h2></div>
+  <div class="section-head rule"><h2>Warehouse services</h2></div>
   <div class="services-grid">
     <div class="service"><h3>Overflow storage</h3><p>Racked, floor or climate-controlled space by the week or month, in Nashville or a partner warehouse where you need it.</p></div>
     <div class="service"><h3>Receiving and inspection</h3><p>Inbounds checked against the PO, labeled, damage-reported and logged in the WMS before they're put away.</p></div>
@@ -122,7 +118,7 @@
 </section>
 
 <section id="how" class="wrap section">
-  <div class="section-head"><h2>How it works</h2></div>
+  <div class="section-head rule"><h2>How it works</h2></div>
   <div class="steps">
     <div class="step"><h3>Post your load</h3><p>Location, dates, volume and services. Two minutes online or one phone call.</p></div>
     <div class="step"><h3>Get one quote</h3><p>We match it to the right warehouse, ours or a vetted partner's, and send one price.</p></div>
@@ -133,13 +129,13 @@
 
 <section id="partners" class="band">
   <div class="wrap">
-    <div>
+    <div class="rule">
       <h2>Warehouse operators: fill your empty space</h2>
       <p>Join the Sanders partner network free. See storage loads in your market, quote the ones you want, and get paid by Sanders after the job.</p>
     </div>
     <div class="actions">
-      <a class="btn btn-primary" href="partners.html">Search open loads</a>
-      <a class="btn btn-ghost" href="partners.html#profile">Apply as a partner</a>
+      <a class="btn btn-primary" href="partners.html">Search Open Loads</a>
+      <a class="btn btn-outline" href="partners.html#profile">Apply as a Partner</a>
     </div>
   </div>
 </section>

@@ -35,4 +35,10 @@ quote response time, the WMS portal link, and `rfqEndpoint`.
   example a Zoho Flow webhook. The JSON field names match the form's `name` attributes.
 - **The partner board shows sample opportunities.** Quotes, invoices and profiles are saved in the
   partner's browser only. A real partner portal needs logins and a database (Phase 2).
-- Brand colors are placeholders until the official Sanders colors are confirmed. Change the five values in the BRAND COLORS block at the top of `assets/css/styles.css`.
+- Brand colors were sampled from sandersmoving.net: navy `#1A2332` / `#222F44`, gold `#C8A961`.
+  They live at the top of `assets/css/styles.css`. Gold buttons use navy text (white on gold fails WCAG AA contrast).
+- The logo is a text stand-in. To use the official Sanders logo, save it as `assets/img/logo.png` (white
+  version) and replace the two `<span>`s inside `<a class="logo">` on each page with
+  `<img src="assets/img/logo.png" alt="Sanders Warehouse Loads">`.
+- Hero photo: save a skyline or warehouse photo as `assets/img/hero.jpg` and change `class="hero"` to
+  `class="hero has-photo"` in `index.html`.

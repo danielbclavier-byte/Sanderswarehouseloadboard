@@ -23,6 +23,14 @@
         el.textContent = val;
       }
     });
+    // Header phone button: <a data-cfg-href="phone"> + <span data-cfg-text="phone">.
+    document.querySelectorAll('[data-cfg-href="phone"]').forEach(function (a) {
+      a.href = cfg.phoneHref || 'tel:' + String(cfg.phone || '').replace(/\D/g, '');
+      a.setAttribute('aria-label', 'Call Sanders at ' + cfg.phone);
+    });
+    document.querySelectorAll('[data-cfg-text]').forEach(function (el) {
+      el.textContent = cfg[el.getAttribute('data-cfg-text')] || '';
+    });
     // Sentences that only make sense with a committed response time.
     document.querySelectorAll('[data-response-time]').forEach(function (el) {
       el.textContent = cfg.responseTime
