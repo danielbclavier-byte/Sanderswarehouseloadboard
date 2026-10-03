@@ -3,47 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Opportunity Board · Sanders Partner Portal</title>
-<meta name="description" content="Open warehousing opportunities for Sanders partner warehouses: storage, receiving, cross-dock, transload and project staging across the Southeast.">
+<title>Load Board · Sanders Warehouse Loads</title>
+<meta name="description" content="Open warehouse loads for Sanders partner warehouses: storage, receiving, cross-dock, transload, pick/pack and project staging across the Southeast.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-header">
-  <div class="wrap bar" style="max-width: 1320px">
-    <a class="brand" href="index.html"><span class="brand-name">SANDERS</span><span class="brand-sub">PARTNER PORTAL</span></a>
-    <div style="display:flex; align-items:center; gap:16px; font-size:14px; flex-wrap: wrap">
-      <span style="color: var(--on-ink-muted)" id="partner-name">Your warehouse</span>
-      <button type="button" class="btn btn-ghost-ink btn-sm" id="open-profile">Profile and COI</button>
-    </div>
+<div class="utility">
+  <div class="wrap">
+    <span>Partner support: <span data-cfg="phone"></span></span>
+    <nav class="links" aria-label="Account">
+      <span id="partner-name" style="display:inline-flex; align-items:center">Guest warehouse</span>
+      <a href="#profile" id="open-profile">Profile and COI</a>
+    </nav>
   </div>
-  <div class="wrap" style="max-width: 1320px">
-    <div class="tabs" role="tablist" aria-label="Opportunities">
-      <button class="tab" role="tab" id="t-new" data-tab="new" aria-controls="board" aria-selected="true">New opportunities <span class="count" id="c-new"></span></button>
+</div>
+<header class="site-header" style="border-bottom: 0">
+  <div class="wrap bar">
+    <a class="logo" href="index.html" aria-label="Sanders Warehouse Loads home">
+      <span class="logo-mark">SANDERS</span>
+      <span class="logo-text">Warehouse Loads<small>PARTNER LOAD BOARD</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="partners.html" aria-current="page">Load board</a>
+      <a class="btn btn-primary" href="quote.html">Post a load</a>
+    </nav>
+  </div>
+</header>
+<div class="subnav">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Loads">
+      <button class="tab" role="tab" id="t-new" data-tab="new" aria-controls="board" aria-selected="true">Open loads <span class="count" id="c-new"></span></button>
       <button class="tab" role="tab" id="t-bids" data-tab="bids" aria-controls="board" aria-selected="false" tabindex="-1">My quotes <span class="count" id="c-bids"></span></button>
       <button class="tab" role="tab" id="t-booked" data-tab="booked" aria-controls="board" aria-selected="false" tabindex="-1">Booked <span class="count" id="c-booked"></span></button>
     </div>
   </div>
-</header>
+</div>
 
-<main id="main" class="wrap portal-main" style="max-width: 1320px">
-  <div id="board" role="tabpanel">
-    <div class="board-filters">
-      <label class="field">Location
-        <input class="input" type="search" id="q" value="Nashville, TN" placeholder="City, ST — leave blank for all markets"></label>
-      <div class="pill-row" role="group" aria-label="Service type" id="filters"></div>
-    </div>
-    <p class="small" style="color: var(--muted-2); margin: 0 0 16px"><span id="result-line" aria-live="polite"></span> · Sample opportunities for preview</p>
+<main id="main" class="wrap" style="padding-top: 16px">
+  <div id="board" role="tabpanel" aria-labelledby="t-new" class="board-layout">
 
-    <div class="board-layout">
-      <div class="board-list" id="list"></div>
-      <aside class="board-detail panel" aria-label="Opportunity detail" id="detail"></aside>
-    </div>
+    <aside class="panel filters" aria-label="Search filters">
+      <div class="panel-head">Search loads</div>
+      <div class="panel-body">
+        <label class="field">Market
+          <input class="input" type="search" id="q" value="Nashville, TN" placeholder="City, ST (blank = all)"></label>
+        <fieldset>
+          <legend class="field" style="margin-bottom:6px">Service</legend>
+          <div class="choice-list" id="filters"></div>
+        </fieldset>
+        <fieldset>
+          <legend class="field" style="margin-bottom:6px">Environment</legend>
+          <div class="choice-list" id="env-filters"></div>
+        </fieldset>
+        <button type="button" class="btn btn-outline btn-sm" id="clear">Clear filters</button>
+      </div>
+    </aside>
+
+    <section aria-label="Results" style="min-width:0">
+      <div class="result-bar">
+        <strong id="result-line" aria-live="polite"></strong>
+        <label class="small" style="display:flex; align-items:center; gap:6px">Sort
+          <select class="select" id="sort">
+            <option value="age">Newest first</option>
+            <option value="start">Start date</option>
+            <option value="market">Market</option>
+          </select></label>
+      </div>
+      <div id="list"></div>
+      <p class="small muted">Sample loads shown for preview. Client names and rates are never shown to partners.</p>
+    </section>
+
+    <aside class="board-detail panel" aria-label="Load detail" id="detail"></aside>
   </div>
 </main>
 
@@ -53,14 +90,14 @@
     <button type="button" class="icon-btn" data-close aria-label="Close">×</button>
   </div>
   <form class="dlg-body" id="profile-form" method="dialog">
-    <p class="small muted" style="margin:0">Sanders uses this to match you to opportunities in your market. Clients never see your details; Sanders is your point of contact.</p>
+    <p class="small muted" style="margin:0">Sanders uses this to match you to loads in your market. Clients never see your details; Sanders is your point of contact.</p>
     <div class="grid-fields">
       <label class="field">Warehouse name<input class="input" name="name" required autocomplete="organization"></label>
       <label class="field">Contact email<input class="input" type="email" name="email" required autocomplete="email"></label>
       <label class="field">Phone<input class="input" type="tel" name="phone" autocomplete="tel"></label>
     </div>
     <fieldset>
-      <legend style="font-weight:600; margin-bottom:10px">Primary location</legend>
+      <legend class="field" style="margin-bottom:8px">Primary location</legend>
       <div class="grid-fields">
         <label class="field">Address<input class="input" name="address" autocomplete="street-address"></label>
         <label class="field">City, ST<input class="input" name="city"></label>
@@ -69,7 +106,7 @@
       </div>
     </fieldset>
     <fieldset>
-      <legend style="font-weight:600; margin-bottom:10px">Capabilities</legend>
+      <legend class="field" style="margin-bottom:8px">Capabilities</legend>
       <div class="choice-grid">
         <label class="choice"><input type="checkbox" name="caps" value="Storage">Storage</label>
         <label class="choice"><input type="checkbox" name="caps" value="Receiving">Receiving</label>
@@ -80,7 +117,7 @@
       </div>
     </fieldset>
     <fieldset>
-      <legend style="font-weight:600; margin-bottom:10px">Environments and certifications</legend>
+      <legend class="field" style="margin-bottom:8px">Environments and certifications</legend>
       <div class="choice-grid">
         <label class="choice"><input type="checkbox" name="certs" value="Climate-controlled">Climate-controlled</label>
         <label class="choice"><input type="checkbox" name="certs" value="Refrigerated">Refrigerated</label>
@@ -94,7 +131,7 @@
       <label class="field">Certificate of insurance (PDF)<input class="input" type="file" name="coi" accept=".pdf,image/*" style="padding-top:9px"></label>
       <label class="field">COI expiry date<input class="input" type="date" name="coiExpiry"></label>
     </div>
-    <div style="display:flex; justify-content:flex-end; gap:12px; flex-wrap: wrap">
+    <div style="display:flex; justify-content:flex-end; gap:10px; flex-wrap: wrap">
       <button type="button" class="btn btn-outline btn-sm" data-close>Cancel</button>
       <button type="submit" class="btn btn-primary btn-sm" value="save">Save profile</button>
     </div>
@@ -102,14 +139,15 @@
 </dialog>
 
 <footer class="site-footer">
-  <div class="wrap" style="max-width: 1320px">
-    <span><strong>SANDERS</strong> · Partner network · <span data-cfg="address"></span></span>
-    <span>Partner support: <span data-cfg="phone"></span> <span data-cfg="email"></span></span>
+  <div class="wrap legal" style="border-top:0; padding-top:20px">
+    <span>© <span id="year"></span> Sanders Moving and Storage · <span data-cfg="address"></span></span>
+    <span>Partner support: <span data-cfg="phone"></span></span>
   </div>
 </footer>
 
 <script src="assets/js/config.js"></script>
 <script src="assets/js/common.js"></script>
+<script src="assets/js/loads-data.js"></script>
 <script src="assets/js/board.js"></script>
 </body>
 </html>

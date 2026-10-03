@@ -158,19 +158,31 @@
       host.innerHTML = '<div class="empty">No requests yet. Submitted requests and their status show up here.</div>';
       return;
     }
-    host.innerHTML = '<div class="table-wrap"><table class="data"><thead><tr>' +
-      '<th scope="col">Request</th><th scope="col">Services</th><th scope="col">Where</th><th scope="col">Volume</th><th scope="col">Inbound</th><th scope="col">Status</th>' +
+    host.innerHTML = '<div class="table-wrap"><table class="board"><thead><tr>' +
+      '<th scope="col">Request #</th><th scope="col">Submitted</th><th scope="col">Services</th><th scope="col">Location</th><th scope="col">Volume</th><th scope="col">Inbound</th><th scope="col">Status</th>' +
       '</tr></thead><tbody>' + list.map(function (r) {
-        return '<tr><td class="mono">' + S.esc(r.requestId) + '<div class="small muted" style="font-family:var(--font-body)">' +
-          S.esc(new Date(r.submittedAt).toLocaleDateString()) + '</div></td>' +
-          '<td>' + S.esc(r.services.join(', ')) + '</td>' +
-          '<td>' + S.esc(r.location) + '</td>' +
-          '<td>' + S.esc(r.quantity + ' ' + r.unit.toLowerCase()) + '</td>' +
-          '<td>' + S.esc(r.inboundDate) + '</td>' +
-          '<td><span class="badge">' + S.esc(r.status) + '</span></td></tr>';
+        return '<tr><td data-label="Request #" class="id">' + S.esc(r.requestId) + '</td>' +
+          '<td data-label="Submitted" class="num">' + S.esc(new Date(r.submittedAt).toLocaleDateString()) + '</td>' +
+          '<td data-label="Services">' + S.esc(r.services.join(', ')) + '</td>' +
+          '<td data-label="Location" class="nowrap">' + S.esc(r.location) + '</td>' +
+          '<td data-label="Volume">' + S.esc(r.quantity + ' ' + r.unit.toLowerCase()) + '</td>' +
+          '<td data-label="Inbound" class="num">' + S.esc(r.inboundDate) + '</td>' +
+          '<td data-label="Status"><span class="badge badge-quoted">' + S.esc(r.status) + '</span></td></tr>';
       }).join('') + '</tbody></table></div>' +
       '<p class="small muted">Status updates from your consultant: Request submitted → Reviewing → Quoted → Won → In storage → Released → Invoiced.</p>';
   }
+
+  // Pre-fill from the home page search box (?location=&service=&inbound=&qty=).
+  var params = new URLSearchParams(location.search);
+  if (params.get('location')) form.elements.location.value = params.get('location');
+  if (params.get('inbound')) form.elements.inboundDate.value = params.get('inbound');
+  if (params.get('qty')) form.elements.quantity.value = params.get('qty');
+  if (params.get('service')) {
+    form.querySelectorAll('input[name="services"]').forEach(function (cb) {
+      cb.checked = cb.value === params.get('service');
+    });
+  }
+  if (location.hash === '#requests') tabCtl.select(document.getElementById('t-req'));
 
   updateSummary();
   updateCount();

@@ -1,4 +1,4 @@
-# Sanders Logistics Network
+# Sanders Warehouse Loads (sanderswarehouseloads)
 
 Warehousing brokerage site for Sanders Moving (Nashville, TN). Project brief: [CLAUDE.md](CLAUDE.md).
 
@@ -6,9 +6,9 @@ Plain HTML, CSS and JavaScript. No build step and no server needed to preview.
 
 | Page | File | What it is |
 |---|---|---|
-| Public site | `index.html` | Hero, proof strip, services, how it works, partner recruitment, quote CTA |
+| Home | `index.html` | Search box (need space / have space), open loads table, services, how it works, partner sign-up |
 | Client portal | `quote.html` | Full request-for-quote form with live summary; tabs for requests, inventory, invoices |
-| Partner portal | `partners.html` | Opportunity board (new / my quotes / booked), quoting, invoice upload, profile and COI |
+| Load board | `partners.html` | Partner load board: filter sidebar, load table, quote panel, booked jobs with invoice upload, profile and COI |
 
 The original design mockups are in `docs/mockups/` for reference.
 
@@ -35,4 +35,4 @@ quote response time, the WMS portal link, and `rfqEndpoint`.
   example a Zoho Flow webhook. The JSON field names match the form's `name` attributes.
 - **The partner board shows sample opportunities.** Quotes, invoices and profiles are saved in the
   partner's browser only. A real partner portal needs logins and a database (Phase 2).
-- Styling uses the mockup palette until Sanders brand files are provided.
+- Brand colors are placeholders until the official Sanders colors are confirmed. Change the five values in the BRAND COLORS block at the top of `assets/css/styles.css`.

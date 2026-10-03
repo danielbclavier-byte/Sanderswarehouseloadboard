@@ -1,28 +1,27 @@
-// Partner portal: opportunity board, quoting, booked jobs, partner profile.
-// Opportunities are client-anonymized by design: no client name, contact or rate ever appears here.
+// Partner load board: search/filter/sort, quoting, booked jobs, partner profile.
+// Loads are client-anonymized by design: no client name, contact or sell rate ever appears here.
 (function () {
   var S = window.Sanders;
+  var esc = S.esc;
   var BIDS_KEY = 'sanders.partner.bids';
   var PROFILE_KEY = 'sanders.partner.profile';
   var INVOICES_KEY = 'sanders.partner.invoices';
 
-  // Sample data until opportunities are posted from real quote requests.
-  var ALL = [
-    { id: 'SLN-1042', title: 'Hotel FF&E receiving and storage', service: 'Receiving', location: 'Nashville, TN', window: 'Nov 2 – Dec 15', size: '22 pallets + loose FF&E', posted: '2h ago', env: 'Climate-controlled', scope: 'Receive deliveries from multiple vendors, inspect against the manifest, photo-document damage and store until Sanders pulls by floor for the renovation.', reqs: 'Dock-high doors, climate-controlled space, COI naming Sanders as additional insured.' },
-    { id: 'SLN-1039', title: 'Rejected load, immediate storage', service: 'Storage', location: 'Nashville, TN', window: 'Inbound tomorrow, ~2 weeks', size: '26 pallets', posted: '3h ago', env: 'Ambient', scope: 'A truckload refused at the receiver needs to come off the trailer and be held until the shipper reroutes it.', reqs: 'Receive within 24 hours, forklift on site, inventory count on receipt.' },
-    { id: 'SLN-1037', title: 'Short-term overflow storage', service: 'Storage', location: 'Nashville, TN', window: '30 days from Oct 20', size: '14 pallets', posted: '1d ago', env: 'Ambient', scope: 'Inbound overflow inventory held for about 30 days, released in two outbound pulls.', reqs: 'Inventory report on receipt, 48-hour release notice.' },
-    { id: 'SLN-1035', title: 'Retail fixtures cross-dock to 8 store runs', service: 'Cross-dock', location: 'Nashville, TN', window: 'Nov 10 – 14', size: '1 inbound trailer · 8 outbound', posted: '1d ago', env: 'Ambient', scope: 'Receive one trailer of store fixtures, sort by store and stage for Sanders trucks to pick up each morning.', reqs: 'Floor space to stage 8 lanes, 6am dock access.' },
-    { id: 'SLN-1031', title: 'Multifamily furniture staging, 64 units', service: 'Staging', location: 'Chattanooga, TN', window: 'Nov 15 – Dec 12', size: '64 unit packages', posted: '2d ago', env: 'Ambient', scope: 'Receive furniture packages for a lease-up, store by unit and release 8 to 10 units per day on schedule.', reqs: 'Labeled storage by unit number, daily release log.' },
-    { id: 'SLN-1028', title: 'Seasonal retail overflow', service: 'Storage', location: 'Atlanta, GA', window: 'Nov 1 – Jan 15', size: '120 pallets', posted: '3d ago', env: 'Ambient', scope: 'Holiday inventory overflow with weekly replenishment pulls back to the client DC.', reqs: 'Racked storage, weekly inventory report, WMS or spreadsheet visibility.' },
-    { id: 'SLN-1024', title: 'Transload two 53-foot trailers', service: 'Transload', location: 'Memphis, TN', window: 'Oct 28', size: '2 trailers', posted: '4d ago', env: 'Ambient', scope: 'Floor-loaded freight transferred to pallets and reloaded to outbound trailers.', reqs: 'Same-day turnaround, pallets and stretch wrap supplied.' },
-    { id: 'SLN-1019', title: 'Event materials storage', service: 'Staging', location: 'Nashville, TN', window: 'Completed Oct 1', size: '9 pallets', posted: '2w ago', env: 'Ambient', scope: 'Stored exhibit materials between two conventions and released to Sanders trucks for load-in.', reqs: 'Release on 24-hour notice.', booked: true, payment: 'Awaiting invoice' }
-  ];
-  var SERVICES = ['All', 'Storage', 'Receiving', 'Cross-dock', 'Transload', 'Staging'];
+  var ALL = window.SANDERS_LOADS;
+  var SERVICES = ['Storage', 'Receiving', 'Cross-dock', 'Transload', 'Pick/pack', 'Staging'];
+  var ENVS = ['Ambient', 'Climate'];
+  var AGE_ORDER = function (p) { var n = parseInt(p, 10); return p.slice(-1) === 'h' ? n : p.slice(-1) === 'd' ? n * 24 : n * 168; };
+
+  var params = new URLSearchParams(location.search);
+  var qInput = document.getElementById('q');
+  if (params.has('q')) qInput.value = params.get('q');
 
   var state = {
     tab: 'new',
-    service: 'All',
-    query: document.getElementById('q').value,
+    services: [],
+    envs: [],
+    query: qInput.value,
+    sort: 'age',
     selected: null,
     bids: S.store(BIDS_KEY, {}),
     invoices: S.store(INVOICES_KEY, {})
@@ -30,7 +29,6 @@
 
   var listEl = document.getElementById('list');
   var detailEl = document.getElementById('detail');
-  var esc = S.esc;
 
   function inTab(j, tab) {
     if (tab === 'booked') return !!j.booked;
@@ -41,103 +39,119 @@
 
   function shown() {
     var q = city();
-    return ALL.filter(function (j) {
+    var rows = ALL.filter(function (j) {
       return inTab(j, state.tab) &&
         (!q || j.location.toLowerCase().indexOf(q) !== -1) &&
-        (state.service === 'All' || j.service === state.service);
+        (!state.services.length || state.services.indexOf(j.service) !== -1) &&
+        (!state.envs.length || state.envs.indexOf(j.env) !== -1);
     });
+    var key = {
+      age: function (j) { return AGE_ORDER(j.posted); },
+      start: function (j) { return j.start === 'ASAP' ? '00' : j.start; },
+      market: function (j) { return j.location; }
+    }[state.sort];
+    return rows.sort(function (a, b) { var x = key(a), y = key(b); return x < y ? -1 : x > y ? 1 : 0; });
   }
 
   function money(n) { return '$' + Number(n).toLocaleString('en-US'); }
 
-  function renderFilters() {
-    document.getElementById('filters').innerHTML = SERVICES.map(function (f) {
-      return '<button type="button" class="pill" data-svc="' + esc(f) + '" aria-pressed="' + (state.service === f) + '">' + esc(f) + '</button>';
+  function checkboxes(hostId, values, picked, name) {
+    document.getElementById(hostId).innerHTML = values.map(function (v) {
+      var n = ALL.filter(function (j) { return (name === 'svc' ? j.service : j.env) === v && inTab(j, state.tab); }).length;
+      return '<label class="choice"><input type="checkbox" data-' + name + '="' + esc(v) + '"' + (picked.indexOf(v) !== -1 ? ' checked' : '') + '>' +
+        esc(v) + ' <span class="small muted" style="margin-left:auto">' + n + '</span></label>';
     }).join('');
+  }
+  function renderFilters() {
+    checkboxes('filters', SERVICES, state.services, 'svc');
+    checkboxes('env-filters', ENVS, state.envs, 'env');
   }
 
   function renderCounts() {
     ['new', 'bids', 'booked'].forEach(function (t) {
-      document.getElementById('c-' + t).textContent = ALL.filter(function (j) { return inTab(j, t); }).length;
+      var n = ALL.filter(function (j) { return inTab(j, t); }).length;
+      document.getElementById('c-' + t).textContent = n || '';
     });
   }
 
-  function statusText(j) {
-    if (j.booked) return state.invoices[j.id] ? 'Booked · invoice submitted' : 'Booked · invoice needed';
-    if (state.bids[j.id]) return 'Quoted ' + money(state.bids[j.id].price);
-    return 'Open for quotes';
-  }
-  function cta(j) {
-    if (j.booked) return 'Manage job';
-    return state.bids[j.id] ? 'View quote' : 'View and quote';
+  function status(j) {
+    if (j.booked) return state.invoices[j.id] ? ['badge-booked', 'Invoiced'] : ['badge-booked', 'Booked'];
+    if (state.bids[j.id]) return ['badge-quoted', 'Quoted ' + money(state.bids[j.id].price)];
+    return ['badge-open', 'Open'];
   }
 
   function renderList() {
     var jobs = shown();
     var q = city();
     document.getElementById('result-line').textContent =
-      jobs.length + (jobs.length === 1 ? ' opportunity' : ' opportunities') + (q ? ' in ' + state.query : ' in all markets');
+      jobs.length + (jobs.length === 1 ? ' load' : ' loads') + (q ? ' in ' + state.query : ' in all markets');
     if (!jobs.length) {
-      listEl.innerHTML = '<div class="empty">Nothing here yet. Try another location, or clear the location to see every market.</div>';
+      listEl.innerHTML = '<div class="empty">No loads match. Clear the market or filters to see every load.</div>';
       return;
     }
-    listEl.innerHTML = jobs.map(function (j) {
-      var sel = state.selected === j.id;
-      return '<article class="opp' + (sel ? ' selected' : '') + '">' +
-        '<div class="top"><span class="id">' + esc(j.id) + ' · posted ' + esc(j.posted) + '</span><span class="badge">' + esc(j.service) + '</span></div>' +
-        '<h3>' + esc(j.title) + '</h3>' +
-        '<div class="meta"><span>' + esc(j.location) + '</span><span>' + esc(j.window) + '</span><span>' + esc(j.size) + '</span></div>' +
-        '<div class="bottom"><span class="status">' + esc(statusText(j)) + '</span>' +
-        '<button type="button" class="btn btn-outline btn-sm" data-select="' + esc(j.id) + '" aria-pressed="' + sel + '">' + esc(cta(j)) + '</button></div>' +
-        '</article>';
-    }).join('');
+    listEl.innerHTML = '<div class="table-wrap" style="border-radius:0"><table class="board"><thead><tr>' +
+      '<th scope="col">Load #</th><th scope="col">Market</th><th scope="col">Service</th>' +
+      '<th scope="col">Start</th><th scope="col">Volume</th><th scope="col">Status</th>' +
+      '<th scope="col"><span class="visually-hidden">Action</span></th></tr></thead><tbody>' +
+      jobs.map(function (j) {
+        var sel = state.selected === j.id;
+        var st = status(j);
+        return '<tr' + (sel ? ' class="selected"' : '') + '>' +
+          '<td data-label="Load #" class="id">' + esc(j.id) + '<span class="sub">' + esc(j.posted) + ' ago</span></td>' +
+          '<td data-label="Market"><span class="title">' + esc(j.location) + '</span><span class="sub">' + esc(j.title) + '</span></td>' +
+          '<td data-label="Service"><span class="badge">' + esc(j.service) + '</span></td>' +
+          '<td data-label="Start" class="num nowrap">' + esc(j.start) + '</td>' +
+          '<td data-label="Volume">' + esc(j.size) + '<span class="sub">' + esc(j.env) + '</span></td>' +
+          '<td data-label="Status"><span class="badge ' + st[0] + '">' + esc(st[1]) + '</span></td>' +
+          '<td class="act"><button type="button" class="btn ' + (sel ? 'btn-dark' : 'btn-outline') + ' btn-sm" data-select="' + esc(j.id) + '" aria-pressed="' + sel + '">' +
+          (j.booked ? 'Manage' : state.bids[j.id] ? 'View' : 'Quote') + '</button></td>' +
+          '</tr>';
+      }).join('') + '</tbody></table></div>';
   }
 
   function renderDetail() {
     var j = ALL.filter(function (x) { return x.id === state.selected; })[0];
     if (!j) {
-      detailEl.innerHTML = '<div style="padding: 8px 0; color: var(--muted); line-height:1.6">' +
-        '<p class="eyebrow" style="font-size:12px">How quoting works</p>' +
-        'Select an opportunity to see the full scope and send your quote. Sanders presents quotes to the client; if yours is accepted, your Sanders consultant confirms the details and Sanders pays you after completion.</div>';
+      detailEl.innerHTML = '<div class="panel-head light">Load details</div><div class="panel-body small muted" style="line-height:1.6">' +
+        'Select a load to see the full scope and send your rate.<br><br>Sanders presents your quote to the client. If it\'s accepted, your Sanders consultant confirms the details, and Sanders pays you after the job is complete.</div>';
       return;
     }
     var bid = state.bids[j.id];
-    var html = '<div class="detail stack-lg">' +
-      '<span class="mono small" style="color: var(--muted-2)">' + esc(j.id) + '</span>' +
-      '<h2 class="display" style="font-size:24px; line-height:1.2" tabindex="-1" id="detail-h">' + esc(j.title) + '</h2>' +
+    var html = '<div class="panel-head">Load ' + esc(j.id) + '</div><div class="panel-body detail stack">' +
+      '<h2 tabindex="-1" id="detail-h">' + esc(j.title) + '</h2>' +
       '<dl>' +
-      '<div><dt>Location</dt><dd>' + esc(j.location) + '</dd></div>' +
+      '<div><dt>Market</dt><dd>' + esc(j.location) + '</dd></div>' +
       '<div><dt>Service</dt><dd>' + esc(j.service) + '</dd></div>' +
       '<div><dt>Window</dt><dd>' + esc(j.window) + '</dd></div>' +
       '<div><dt>Volume</dt><dd>' + esc(j.size) + '</dd></div>' +
       '<div><dt>Environment</dt><dd>' + esc(j.env) + '</dd></div>' +
+      '<div><dt>Posted</dt><dd>' + esc(j.posted) + ' ago</dd></div>' +
       '</dl>' +
-      '<div><div style="font-weight:600; margin-bottom:6px">Scope</div><p style="margin:0; line-height:1.6; color:#3A4250">' + esc(j.scope) + '</p></div>' +
-      '<div><div style="font-weight:600; margin-bottom:6px">Requirements</div><p style="margin:0; line-height:1.6; color:#3A4250">' + esc(j.reqs) + '</p></div>';
+      '<div><h3>Scope</h3><p>' + esc(j.scope) + '</p></div>' +
+      '<div><h3>Requirements</h3><p>' + esc(j.reqs) + '</p></div>';
 
     if (j.booked) {
       var inv = state.invoices[j.id];
       html += '<div class="divider stack">' +
-        '<div style="font-weight:600">Booked · job complete</div>' +
-        '<div><span class="small muted">Payment status</span><br><span class="badge ' + (inv ? 'badge-neutral' : '') + '">' + esc(inv ? 'Invoice received · processing' : j.payment) + '</span></div>' +
-        (inv ? '<p class="small muted" style="margin:0">Invoice <strong>' + esc(inv.file) + '</strong> submitted ' + esc(new Date(inv.at).toLocaleDateString()) + '.</p>' : '') +
+        '<div><h3>Payment status</h3><span class="badge ' + (inv ? 'badge-quoted' : 'badge-accent') + '">' + esc(inv ? 'Invoice received · processing' : j.payment) + '</span></div>' +
+        (inv ? '<p class="small muted">Invoice <strong>' + esc(inv.file) + '</strong> submitted ' + esc(new Date(inv.at).toLocaleDateString()) + '.</p>' : '') +
         '<label class="field">Upload invoice (PDF)<input class="input" type="file" accept=".pdf,image/*" id="inv-file" style="padding-top:9px"></label>' +
-        '<button type="button" class="btn btn-dark btn-sm" id="inv-send">' + (inv ? 'Replace invoice' : 'Submit invoice') + '</button>' +
+        '<button type="button" class="btn btn-dark" id="inv-send">' + (inv ? 'Replace invoice' : 'Submit invoice') + '</button>' +
         '</div>';
     } else if (bid) {
-      html += '<div class="divider" style="line-height:1.6">' +
-        '<div style="font-weight:600; margin-bottom:4px">Quote sent: ' + esc(money(bid.price)) + '</div>' +
+      html += '<div class="divider stack">' +
+        '<div><h3>Your quote</h3><strong style="font-size:20px">' + esc(money(bid.price)) + '</strong></div>' +
         (bid.available ? '<div class="small">Earliest availability: ' + esc(bid.available) + '</div>' : '') +
-        (bid.notes ? '<div class="small muted" style="margin-top:6px">' + esc(bid.notes) + '</div>' : '') +
-        '<div class="muted" style="margin-top:8px">Your Sanders consultant will present it to the client and confirm if it\'s accepted.</div>' +
-        '<button type="button" class="btn btn-outline btn-sm" id="withdraw" style="margin-top:12px">Withdraw quote</button>' +
+        (bid.notes ? '<div class="small muted">' + esc(bid.notes) + '</div>' : '') +
+        '<p class="small muted">Your Sanders consultant will present it to the client and confirm if it\'s accepted.</p>' +
+        '<button type="button" class="btn btn-outline btn-sm" id="withdraw">Withdraw quote</button>' +
         '</div>';
     } else {
       html += '<form class="divider stack" id="quote-form" novalidate>' +
-        '<label class="field">Your price (USD) <span class="hint">Total for the scope above</span><input class="input" type="number" min="1" inputmode="decimal" name="price" required></label>' +
+        '<label class="field">Your rate (USD) <span class="hint">Total for the scope above</span><input class="input" type="number" min="1" inputmode="decimal" name="price" required></label>' +
         '<label class="field">Earliest availability<input class="input" type="date" name="available"></label>' +
         '<label class="field">Notes for Sanders<textarea class="textarea" name="notes" rows="3" placeholder="Storage rate basis, in/out handling fees, dock hours"></textarea></label>' +
-        '<p class="error-text" id="quote-err" hidden style="margin:0">Enter a price to send your quote.</p>' +
+        '<p class="error-text" id="quote-err" hidden style="margin:0">Enter a rate to send your quote.</p>' +
         '<button type="submit" class="btn btn-primary">Send quote to Sanders</button>' +
         '</form>';
     }
@@ -152,6 +166,17 @@
     renderDetail();
   }
 
+  function selectLoad(id, focus) {
+    state.selected = id;
+    renderList();
+    renderDetail();
+    if (!focus) return;
+    var h = document.getElementById('detail-h');
+    var narrow = window.innerWidth <= 1180;
+    if (narrow) detailEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (h) h.focus({ preventScroll: !narrow });
+  }
+
   // ----- events -----
   S.tabs(document.querySelector('[role="tablist"]'), function (btn) {
     state.tab = btn.getAttribute('data-tab');
@@ -159,29 +184,28 @@
     document.getElementById('board').setAttribute('aria-labelledby', btn.id);
     render();
   });
-  // One panel serves all three tabs; keep it visible.
-  document.getElementById('board').hidden = false;
+  document.getElementById('board').hidden = false; // one panel serves all three tabs
 
-  document.getElementById('q').addEventListener('input', function (e) {
-    state.query = e.target.value;
+  qInput.addEventListener('input', function (e) { state.query = e.target.value; renderList(); });
+  document.getElementById('sort').addEventListener('change', function (e) { state.sort = e.target.value; renderList(); });
+  document.querySelector('.filters').addEventListener('change', function (e) {
+    var svc = e.target.getAttribute('data-svc');
+    var env = e.target.getAttribute('data-env');
+    var list = svc ? state.services : env ? state.envs : null;
+    if (!list) return;
+    var v = svc || env;
+    var i = list.indexOf(v);
+    if (e.target.checked && i === -1) list.push(v);
+    if (!e.target.checked && i !== -1) list.splice(i, 1);
     renderList();
   });
-  document.getElementById('filters').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-svc]');
-    if (!b) return;
-    state.service = b.getAttribute('data-svc');
-    renderFilters();
-    renderList();
+  document.getElementById('clear').addEventListener('click', function () {
+    state.services = []; state.envs = []; state.query = ''; qInput.value = '';
+    renderFilters(); renderList();
   });
   listEl.addEventListener('click', function (e) {
     var b = e.target.closest('[data-select]');
-    if (!b) return;
-    state.selected = b.getAttribute('data-select');
-    renderList();
-    renderDetail();
-    var h = document.getElementById('detail-h');
-    if (window.innerWidth < 960) detailEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (h) h.focus({ preventScroll: window.innerWidth >= 960 });
+    if (b) selectLoad(b.getAttribute('data-select'), true);
   });
 
   detailEl.addEventListener('submit', function (e) {
@@ -195,12 +219,7 @@
       f.elements.price.focus();
       return;
     }
-    state.bids[state.selected] = {
-      price: price,
-      available: f.elements.available.value,
-      notes: f.elements.notes.value.trim(),
-      at: new Date().toISOString()
-    };
+    state.bids[state.selected] = { price: price, available: f.elements.available.value, notes: f.elements.notes.value.trim(), at: new Date().toISOString() };
     S.save(BIDS_KEY, state.bids);
     S.toast('Quote sent to Sanders for ' + state.selected + '.');
     render();
@@ -230,7 +249,7 @@
   function loadProfile() {
     var p = S.store(PROFILE_KEY, null);
     if (!p) return;
-    document.getElementById('partner-name').textContent = p.name || 'Your warehouse';
+    document.getElementById('partner-name').textContent = p.name || 'Guest warehouse';
     Object.keys(p).forEach(function (k) {
       var el = pform.elements[k];
       if (!el || k === 'coi') return;
@@ -244,7 +263,7 @@
   function openProfile() {
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
   }
-  document.getElementById('open-profile').addEventListener('click', openProfile);
+  document.getElementById('open-profile').addEventListener('click', function (e) { e.preventDefault(); openProfile(); });
   dlg.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { dlg.close(); }); });
   pform.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -265,5 +284,10 @@
 
   loadProfile();
   render();
+  // Deep links: #profile opens the profile; #SWL-1042 opens that load.
   if (location.hash === '#profile') openProfile();
+  else if (location.hash.length > 1) {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (ALL.some(function (j) { return j.id === id && inTab(j, 'new'); })) selectLoad(id, false);
+  }
 })();

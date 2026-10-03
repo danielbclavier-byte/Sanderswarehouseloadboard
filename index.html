@@ -3,26 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sanders Logistics Network · Warehouse space in Nashville and the Southeast</title>
-<meta name="description" content="Overflow storage, receiving, cross-docking, transloading and project staging from Sanders in Nashville, TN, plus vetted partner warehouses across the Southeast. One quote, one invoice.">
+<title>Sanders Warehouse Loads · Warehouse Space and Storage Loads, Nashville TN</title>
+<meta name="description" content="Sanders Warehouse Loads: find short-term warehouse space or quote open storage, cross-dock, transload and staging loads in Nashville and across the Southeast.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
+<div class="utility">
+  <div class="wrap">
+    <span>Call <span data-cfg="phone"></span> · Mon–Fri</span>
+    <nav class="links" aria-label="Account">
+      <a href="quote.html#requests">Client login</a>
+      <a href="partners.html">Warehouse partner login</a>
+    </nav>
+  </div>
+</div>
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="index.html"><span class="brand-name">SANDERS</span><span class="brand-sub">LOGISTICS NETWORK</span></a>
+    <a class="logo" href="index.html" aria-label="Sanders Warehouse Loads home">
+      <span class="logo-mark">SANDERS</span>
+      <span class="logo-text">Warehouse Loads<small>NASHVILLE · SINCE 1895</small></span>
+    </a>
     <nav class="main-nav" aria-label="Main">
+      <a href="partners.html">Load board</a>
       <a href="#services">Services</a>
       <a href="#how">How it works</a>
-      <a href="#partners">Partners</a>
-      <a href="partners.html">Partner login</a>
-      <a class="btn btn-primary btn-sm" href="quote.html">Get a quote</a>
+      <a href="#partners">Become a partner</a>
+      <a class="btn btn-primary" href="quote.html">Get a quote</a>
     </nav>
   </div>
 </header>
@@ -30,97 +42,151 @@
 <main id="main">
 <section class="hero">
   <div class="wrap">
-    <div class="hero-copy">
-      <p class="eyebrow on-ink">Since 1895 · Nashville, TN</p>
-      <h1 class="display">Warehouse space when you need it. No lease.</h1>
-      <p class="lede">Overflow storage, receiving, cross-docking and transloading. Start in our 66,000 sq ft Nashville facility, or let us place you in a vetted partner warehouse across the Southeast. Either way, Sanders manages it from inbound to release.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="quote.html">Request a quote</a>
-        <a class="btn btn-ghost-ink" href="#partners">Join the partner network</a>
-      </div>
+    <div>
+      <h1>Warehouse space. Booked fast. No lease.</h1>
+      <p>Post your storage load and get one quote from Sanders. We place it in our 66,000 sq ft Nashville warehouse or a vetted partner warehouse across the Southeast, then manage it until release.</p>
+      <ul>
+        <li>One point of contact from inbound to release</li>
+        <li>One quote covering storage, handling and pull-outs</li>
+        <li>SKU-level inventory in the Sanders WMS portal</li>
+      </ul>
     </div>
-    <div class="hero-card">
-      <div class="mono small" style="letter-spacing:0.12em;color:var(--on-ink-muted)">WHAT ONE REQUEST GETS YOU</div>
-      <div class="row"><span class="mono">01</span><span>A single point of contact from inbound to release</span></div>
-      <div class="row"><span class="mono">02</span><span>One quote covering storage, handling and pull-outs</span></div>
-      <div class="row"><span class="mono">03</span><span>Real-time, SKU-level inventory in the Sanders WMS portal</span></div>
+
+    <div class="search-card">
+      <div class="tabs" role="tablist" aria-label="Search">
+        <button class="tab" role="tab" id="st-ship" aria-controls="sp-ship" aria-selected="true">I need space</button>
+        <button class="tab" role="tab" id="st-wh" aria-controls="sp-wh" aria-selected="false" tabindex="-1">I have space</button>
+      </div>
+      <form id="sp-ship" role="tabpanel" aria-labelledby="st-ship" action="quote.html" method="get">
+        <div class="grid-fields">
+          <label class="field">Location<input class="input" name="location" placeholder="City, ST or ZIP" value="Nashville, TN"></label>
+          <label class="field">Service
+            <select class="select" name="service">
+              <option value="Storage">Storage</option>
+              <option value="Receiving and inspection">Receiving</option>
+              <option value="Cross-docking">Cross-dock</option>
+              <option value="Transloading">Transload</option>
+              <option value="Pick, pack and fulfillment">Pick and pack</option>
+              <option value="Project staging (FF&amp;E)">Project staging</option>
+            </select></label>
+          <label class="field">Inbound date<input class="input" type="date" name="inbound"></label>
+          <label class="field">Pallets<input class="input" type="number" min="1" name="qty" inputmode="numeric" placeholder="e.g. 24"></label>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Get a warehouse quote</button>
+      </form>
+      <form id="sp-wh" role="tabpanel" aria-labelledby="st-wh" action="partners.html" method="get" hidden>
+        <label class="field">Your market<input class="input" name="q" placeholder="City, ST" value="Nashville, TN"></label>
+        <p class="small muted" style="margin:0">See open storage loads near your warehouse and send Sanders your rate. Free to join.</p>
+        <button class="btn btn-dark btn-block" type="submit">Search open loads</button>
+      </form>
     </div>
   </div>
 </section>
 
-<section class="proof" aria-label="Why Sanders">
+<section class="stats" aria-label="Why Sanders">
   <div class="wrap">
-    <div><div class="num">1895</div><div class="lbl">Founded</div></div>
-    <div><div class="num">66,000 sq ft</div><div class="lbl">Nashville facility, climate-controlled bays</div></div>
-    <div><div class="num">24/7</div><div class="lbl">CCTV, controlled access, fire suppression</div></div>
-    <div><div class="num">65+ years</div><div class="lbl">Allied Van Lines partner · A+ BBB</div></div>
+    <div class="stat"><b>1895</b><span>Founded in Nashville</span></div>
+    <div class="stat"><b>66,000 sq ft</b><span>Climate-controlled warehouse</span></div>
+    <div class="stat"><b>24/7</b><span>CCTV and controlled access</span></div>
+    <div class="stat"><b>A+ BBB</b><span>Allied Van Lines partner 65+ years</span></div>
+  </div>
+</section>
+
+<section class="wrap section" aria-labelledby="loads-h">
+  <div class="section-head">
+    <div>
+      <h2 id="loads-h">Open warehouse loads</h2>
+      <p>Latest storage and handling jobs posted to the Sanders partner network.</p>
+    </div>
+    <a class="btn btn-outline btn-sm" href="partners.html?q=">View full load board</a>
+  </div>
+  <div class="table-wrap">
+    <table class="board">
+      <thead><tr><th scope="col">Age</th><th scope="col">Load #</th><th scope="col">Market</th><th scope="col">Service</th><th scope="col">Start</th><th scope="col">Volume</th><th scope="col">Env.</th><th scope="col"><span class="visually-hidden">Action</span></th></tr></thead>
+      <tbody id="home-loads"></tbody>
+    </table>
   </div>
 </section>
 
 <section id="services" class="wrap section">
-  <p class="eyebrow">Services</p>
-  <h2 class="display">Short-term space, handled end to end.</h2>
+  <div class="section-head"><h2>Warehouse services</h2></div>
   <div class="services-grid">
-    <article class="service"><span class="code">OS</span><h3>Overflow storage</h3><p>Racked, floor or climate-controlled space by the week or month in our Nashville facility, or a partner warehouse where you need it.</p></article>
-    <article class="service"><span class="code">RX</span><h3>Receive, inspect and store</h3><p>Every inbound checked against the PO, labeled, damage-reported and logged in our WMS before it hits a shelf.</p></article>
-    <article class="service"><span class="code">XD</span><h3>Cross-docking</h3><p>Inbound freight sorted and moved to outbound trucks the same or next day, without long-term storage.</p></article>
-    <article class="service"><span class="code">TL</span><h3>Transloading</h3><p>Floor-loaded trailers and containers palletized, wrapped and reloaded, including rejected or refused loads.</p></article>
-    <article class="service"><span class="code">PF</span><h3>Pick, pack and rework</h3><p>Order fulfillment, kitting, pallet rework and relabeling handled inside the warehouse, tracked at the SKU level.</p></article>
-    <article class="service"><span class="code">PS</span><h3>Project staging</h3><p>FF&amp;E and fixtures for hotel, multifamily and retail projects held and released on the construction schedule.</p></article>
-    <article class="service"><span class="code">DL</span><h3>Delivery from storage</h3><p>Sanders trucks and crews take released inventory from the warehouse to the site.</p></article>
+    <div class="service"><h3>Overflow storage</h3><p>Racked, floor or climate-controlled space by the week or month, in Nashville or a partner warehouse where you need it.</p></div>
+    <div class="service"><h3>Receiving and inspection</h3><p>Inbounds checked against the PO, labeled, damage-reported and logged in the WMS before they're put away.</p></div>
+    <div class="service"><h3>Cross-docking</h3><p>Freight sorted and moved to outbound trucks the same or next day, no long-term storage.</p></div>
+    <div class="service"><h3>Transloading</h3><p>Floor-loaded trailers and containers palletized, wrapped and reloaded, including refused loads.</p></div>
+    <div class="service"><h3>Pick, pack and rework</h3><p>Order fulfillment, kitting, pallet rework and relabeling, tracked at the SKU level.</p></div>
+    <div class="service"><h3>Project staging</h3><p>FF&amp;E and fixtures for hotel, multifamily and retail projects, released on the construction schedule.</p></div>
+    <div class="service"><h3>Delivery from storage</h3><p>Sanders trucks and crews take released inventory from the warehouse to your site.</p></div>
   </div>
 </section>
 
 <section id="how" class="wrap section">
-  <p class="eyebrow">How it works</p>
-  <h2 class="display">Request it once. We handle the rest.</h2>
+  <div class="section-head"><h2>How it works</h2></div>
   <div class="steps">
-    <div class="step"><div class="n">1</div><h3>Tell us the job</h3><p>Where, when, how much and how long. Two minutes on the quote form, or one call.</p></div>
-    <div class="step"><div class="n">2</div><h3>Get one quote</h3><p>We match your freight to the right warehouse, ours or a vetted partner's, and send one price.</p></div>
-    <div class="step"><div class="n">3</div><h3>We manage it</h3><p>Your logistics consultant handles receiving, inventory reports and releases, and updates you at every step.</p></div>
-    <div class="step"><div class="n">4</div><h3>One invoice</h3><p>No chasing warehouses. You pay Sanders; we manage the facility.</p></div>
+    <div class="step"><h3>Post your load</h3><p>Location, dates, volume and services. Two minutes online or one phone call.</p></div>
+    <div class="step"><h3>Get one quote</h3><p>We match it to the right warehouse, ours or a vetted partner's, and send one price.</p></div>
+    <div class="step"><h3>We manage it</h3><p>Your Sanders consultant handles receiving, inventory reports and releases.</p></div>
+    <div class="step"><h3>One invoice</h3><p>You pay Sanders. We handle the warehouse.</p></div>
   </div>
 </section>
 
-<section id="partners" class="partner-band">
+<section id="partners" class="band">
   <div class="wrap">
-    <div class="copy">
-      <p class="eyebrow">For warehouse operators</p>
-      <h2 class="display">Turn empty floor space and dock doors into revenue.</h2>
-      <p>Create a free partner profile, add your locations and capabilities, and see open storage opportunities in your market. Quote the ones you want; we handle the client and pay you after the job.</p>
+    <div>
+      <h2>Warehouse operators: fill your empty space</h2>
+      <p>Join the Sanders partner network free. See storage loads in your market, quote the ones you want, and get paid by Sanders after the job.</p>
     </div>
     <div class="actions">
-      <a class="btn btn-dark" href="partners.html">See open opportunities</a>
-      <a class="btn btn-outline" href="partners.html#profile">Apply as a partner</a>
+      <a class="btn btn-primary" href="partners.html">Search open loads</a>
+      <a class="btn btn-ghost" href="partners.html#profile">Apply as a partner</a>
     </div>
-  </div>
-</section>
-
-<section class="cta-band" aria-labelledby="cta-h">
-  <div class="wrap">
-    <div style="flex: 999 1 480px; min-width: 0">
-      <p class="eyebrow">Request a quote</p>
-      <h2 id="cta-h" class="display" style="font-size: clamp(30px, 4vw, 40px); margin-bottom: 14px">Tell us about the job.</h2>
-      <p class="muted" style="margin:0 0 24px; font-size: 18px">A Sanders logistics consultant reviews every request personally.</p>
-      <a class="btn btn-primary" href="quote.html">Start a quote request</a>
-    </div>
-    <address class="contact" style="font-style: normal">
-      <div data-cfg="phone"></div>
-      <div data-cfg="email"></div>
-      <div data-cfg="address"></div>
-    </address>
   </div>
 </section>
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <span><strong>SANDERS</strong> · Moving and Storage · <span data-cfg="address"></span></span>
-    <span><span data-cfg="phone"></span> <span data-cfg="email"></span> · US DOT <span data-cfg="usdot"></span> · © <span id="year"></span></span>
+  <div class="wrap cols">
+    <div>
+      <h4>Sanders Warehouse Loads</h4>
+      <ul><li data-cfg="address"></li><li data-cfg="phone"></li><li data-cfg="email"></li></ul>
+    </div>
+    <div>
+      <h4>Shippers</h4>
+      <ul><li><a href="quote.html">Get a quote</a></li><li><a href="quote.html#requests">Track a request</a></li><li><a href="#services">Services</a></li></ul>
+    </div>
+    <div>
+      <h4>Warehouses</h4>
+      <ul><li><a href="partners.html">Load board</a></li><li><a href="partners.html#profile">Become a partner</a></li></ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <span>© <span id="year"></span> Sanders Moving and Storage · US DOT <span data-cfg="usdot"></span></span>
+    <span>Allied Van Lines agent</span>
   </div>
 </footer>
 
 <script src="assets/js/config.js"></script>
 <script src="assets/js/common.js"></script>
+<script src="assets/js/loads-data.js"></script>
+<script>
+(function () {
+  var S = window.Sanders;
+  S.tabs(document.querySelector('.search-card [role="tablist"]'));
+  var rows = window.SANDERS_LOADS.filter(function (l) { return !l.booked; }).slice(0, 6);
+  document.getElementById('home-loads').innerHTML = rows.map(function (l) {
+    return '<tr>' +
+      '<td data-label="Age" class="nowrap">' + S.esc(l.posted) + '</td>' +
+      '<td data-label="Load #" class="id">' + S.esc(l.id) + '</td>' +
+      '<td data-label="Market" class="nowrap">' + S.esc(l.location) + '</td>' +
+      '<td data-label="Service"><span class="badge">' + S.esc(l.service) + '</span></td>' +
+      '<td data-label="Start" class="num">' + S.esc(l.start) + '</td>' +
+      '<td data-label="Volume">' + S.esc(l.size) + '</td>' +
+      '<td data-label="Env.">' + S.esc(l.env) + '</td>' +
+      '<td class="act"><a class="btn btn-outline btn-sm" href="partners.html?q=#' + S.esc(l.id) + '">Quote</a></td>' +
+      '</tr>';
+  }).join('');
+})();
+</script>
 </body>
 </html>
