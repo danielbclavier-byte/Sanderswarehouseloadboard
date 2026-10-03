@@ -43,3 +43,9 @@ quote response time, the WMS portal link, and `rfqEndpoint`.
   Travlin Braden, CC BY-SA, loaded from Wikimedia Commons. Keep the photo credit on the page while it's used.
   To use your own photo, save it as `assets/img/hero.jpg` and delete the `style="--hero-photo: ..."`
   attribute on the hero in `index.html`.
+
+## After changing CSS or JS
+
+GitHub Pages lets browsers cache files for about 10 minutes. Each page loads `styles.css` and the scripts with
+a `?v=` number; bump that number in all three HTML files whenever you change those files, so visitors never
+get new pages with an old stylesheet.
